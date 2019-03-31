@@ -49,6 +49,13 @@ router.get("/comments/:id" , function(req, res) {
     })
 })
 
+router.delete("/comments/:id" , function(req, res) {
+  db.Comment.deleteOne({ _id: req.params.id} , function(err, deleted) {
+    if (err) throw err;
+    res.json(deleted)
+  })
+})
+
 router.get("/scrape", function(req, res) {
     axios.get("https://na.leagueoflegends.com/en/news/").then(function(response) {
         // console.log(response.data , "axios response data")

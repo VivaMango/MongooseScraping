@@ -93,6 +93,18 @@ $.ajax({
                 }).then(function(comments) {
                     console.log(comments)
                     notePop(comments)
+                    $(".delNote").on("click" , function(event) {
+                        event.preventDefault()
+                        let delID = $(this).attr("id")
+                        console.log("deleteclicked")
+                        console.log(delID)
+                        $.ajax({
+                            method: "DELETE",
+                            url: `/comments/${delID}`
+                        }).then(function(deleted) {
+                            console.log(deleted)
+                        })
+                    })
                 })
             });
         });
@@ -132,10 +144,14 @@ const tablePop = db => {
 
 //DYNAMICALLY POPULATE SELECTED ARTICLE COMMENTS
 const notePop = db => {
-    const headArray = ["Title" , "Comment"]
+    const headArray = ["Title" , "Comment" , "Delete"]
     let comTitle = db.title
     let comBody = db.body
-    const comArray = [comTitle , comBody]
+    let deleteButton = $("<button>")
+    deleteButton.text("Delete")
+    deleteButton.attr("id" , db._id)
+    deleteButton.addClass("btn btn-danger delNote")
+    const comArray = [comTitle , comBody , deleteButton]
 
     let commentTable = $("<table>")
     commentTable.addClass("table")
@@ -151,7 +167,7 @@ const notePop = db => {
     let bodyTr = $("<tr>")
     comArray.forEach(function(element){
         let bodyTd = $("<td>")
-        bodyTd.text(element)
+        bodyTd.html(element)
         bodyTr.append(bodyTd)
     })
     commentThead.append(headTr)
