@@ -1,17 +1,20 @@
 console.log("CLIENT JS")
 //SCRAPE FUNCTION WITH NO REDUNDANCY PREVENTION WORKING LOCALLY
-//  $.ajax({
-//         method: "GET",
-//         url: "/scrape/"
-//       })
-        // .then(function(data) {
-        //   console.log(data);
-        // });
+//TODO WRAP IN FUNCTION WHEN BUTTONS WORK
+ $.ajax({
+        method: "GET",
+        url: "/scrape/"
+      })
+        .then(function(data) {
+          console.log(data);
+        });
 
+//TODO FIX HANDLEBARS BUTTON ISSUES
 $("#scrapeBtn").on("click" , function(element) {
     console.log("CLICKED");
 })
 
+//TODO WRAP IN FUNCTION WHEN BUTTONS WORK
 $.ajax({
         method: "GET",
         url: "/articles/"
@@ -75,6 +78,7 @@ $.ajax({
         })
         $(".getNote").on("click" , function(event) {
             console.log("clicked")
+            $("#noteForm").empty()
             let getAttr = $(this).attr("dbid")
             $.ajax({
                 method: "GET",
@@ -88,11 +92,13 @@ $.ajax({
                     url: `/comments/${commentID}`
                 }).then(function(comments) {
                     console.log(comments)
+                    notePop(comments)
                 })
             });
         });
     });
 
+//DYNAMICALLY POPULATE SCRAPED ARTICLES
 const tablePop = db => {
     let valTitle = db.title;
     let valDescription = db.link;
@@ -122,4 +128,35 @@ const tablePop = db => {
         bodyRow.append(newData);
     });
     $('#articleTable').append(bodyRow);
+}
+
+//DYNAMICALLY POPULATE SELECTED ARTICLE COMMENTS
+const notePop = db => {
+    const headArray = ["Title" , "Comment"]
+    let comTitle = db.title
+    let comBody = db.body
+    const comArray = [comTitle , comBody]
+
+    let commentTable = $("<table>")
+    commentTable.addClass("table")
+    let commentThead = $("<thead>")
+    let headTr = $("<tr>")
+    headArray.forEach(function(element) {
+        let headTh = $("<th>")
+        headTh.attr("scope" , "col")
+        headTh.text(element)
+        headTr.append(headTh)
+    })
+    let commentTbody = $("<tbody>")
+    let bodyTr = $("<tr>")
+    comArray.forEach(function(element){
+        let bodyTd = $("<td>")
+        bodyTd.text(element)
+        bodyTr.append(bodyTd)
+    })
+    commentThead.append(headTr)
+    commentTbody.append(bodyTr)
+    commentTable.append(commentThead)
+    commentTable.append(commentTbody)
+    $("#noteForm").append(commentTable)
 }

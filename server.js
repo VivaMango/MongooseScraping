@@ -25,7 +25,7 @@ app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
 //ROUTES
-var routes = require("./routes/htmlRoutes.js");
+var routes = require("./routes/routes.js");
 app.use(routes);
 
 //MAIN SCREEN TURN ON
