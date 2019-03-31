@@ -41,6 +41,14 @@ router.post("/articles/:id" , function(req, res) {
     })
 })
 
+router.get("/comments/:id" , function(req, res) {
+    console.log(req , "get note req")
+    db.Comment.findById(req.params.id , function(err, comment) {
+        if (err) throw err;
+        res.json(comment)
+    })
+})
+
 router.get("/scrape", function(req, res) {
     axios.get("https://na.leagueoflegends.com/en/news/").then(function(response) {
         // console.log(response.data , "axios response data")

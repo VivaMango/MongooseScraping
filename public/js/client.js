@@ -73,22 +73,47 @@ $.ajax({
             console.log(noteForm)
             
         })
+        $(".getNote").on("click" , function(event) {
+            console.log("clicked")
+            let getAttr = $(this).attr("dbid")
+            $.ajax({
+                method: "GET",
+                url: `/articles/${getAttr}`
+            }).then(function(data) {
+                console.log(data);
+                var commentID = data.comment
+                console.log(commentID)
+                $.ajax({
+                    method: "GET",
+                    url: `/comments/${commentID}`
+                }).then(function(comments) {
+                    console.log(comments)
+                })
+            });
         });
+    });
 
 const tablePop = db => {
     let valTitle = db.title;
     let valDescription = db.link;
     let dbID = db._id;
-    let noteBtn = $("<button>");
+    let noteBtnAdd = $("<button>");
+    let noteBtnGet = $("<button>")
 
-    noteBtn.attr("dbid" , dbID);
-    let noteAttr = noteBtn.attr("dbid")
+    noteBtnAdd.attr("dbid" , dbID);
+    let noteAttr = noteBtnAdd.attr("dbid")
     console.log(noteAttr)
-    // noteBtn.attr("id" , noteAttr)
-    noteBtn.text("Add Note");
-    noteBtn.addClass("btn btn-primary addNote");
+    // noteBtnAdd.attr("id" , noteAttr)
+    noteBtnAdd.text("Add Note");
+    noteBtnAdd.addClass("btn btn-primary addNote");
 
-    var dataArray = [valTitle , valDescription , noteBtn];
+    noteBtnGet.attr("dbid" , dbID);
+    console.log(noteAttr)
+    // noteBtnGet.attr("id" , noteAttr)
+    noteBtnGet.text("Get Notes");
+    noteBtnGet.addClass("btn btn-dark getNote");
+
+    var dataArray = [valTitle , valDescription , noteBtnAdd , noteBtnGet];
 
     var bodyRow = $("<tr>");
     dataArray.forEach(function(element) {
