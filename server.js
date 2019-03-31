@@ -33,10 +33,8 @@ var mongo = mongoose.connection;
 mongo.on('error', console.error.bind(console, 'connection error:'));
 mongo.once('open', function() {
     console.log("Mongoose Connected to DB Succesfully")
-  // Start our server so that it can begin listening to client requests.
     app.listen(PORT, function() {
-    // Log (server-side) when our server has started
-    console.log(`APP ON ${PORT}`);
+    console.log(`APP LIVE ON ${PORT}`);
   });
 });
 
